@@ -108,51 +108,23 @@ Hooks.once('ready', async () => {
  * Add controls to scene controls
  */
 Hooks.on('getSceneControlButtons', (controls) => {
-    console.log(`${MODULE_ID} | getSceneControlButtons called`, controls);
-    console.log(`${MODULE_ID} | controls type:`, typeof controls, Array.isArray(controls));
+    // Foundry v13: controls is an object with named control groups
+    // Each group has a 'tools' property which is also an object
 
-    // In Foundry v13, controls might be passed differently
-    // Let's inspect what we get
-    if (!controls) {
-        console.warn(`${MODULE_ID} | controls is null/undefined`);
+    // Find token controls - could be 'tokens' or 'token'
+    const tokenControls = controls.tokens || controls.token;
+
+    if (!tokenControls) {
+        console.warn(`${MODULE_ID} | Could not find token controls`);
         return;
     }
 
-    // Try to find token controls in various ways
-    let tokenControls = null;
-
-    if (Array.isArray(controls)) {
-        // Standard array approach
-        tokenControls = controls.find(c => c.name === 'token' || c.name === 'tokens');
-        console.log(`${MODULE_ID} | Found in array:`, tokenControls);
-    } else if (typeof controls === 'object') {
-        // Object with named properties
-        tokenControls = controls.token || controls.tokens;
-        console.log(`${MODULE_ID} | Found in object:`, tokenControls);
-
-        // If still not found, try to iterate
-        if (!tokenControls) {
-            for (const [key, value] of Object.entries(controls)) {
-                console.log(`${MODULE_ID} | Control key: ${key}`, value);
-                if (key === 'token' || key === 'tokens') {
-                    tokenControls = value;
-                    break;
-                }
-            }
-        }
+    // Ensure tools exists
+    if (!tokenControls.tools) {
+        tokenControls.tools = {};
     }
 
-    if (!tokenControls) {
-        console.warn(`${MODULE_ID} | Could not find token controls, adding to first available`);
-        // Try adding to the first control group
-        if (Array.isArray(controls) && controls.length > 0) {
-            tokenControls = controls[0];
-        } else {
-            return;
-        }
-    }
-
-    // Define our tools
+    // Define our tool - Foundry v13 structure
     const shopTool = {
         name: 'arena-market',
         title: 'Arena Market',
@@ -160,7 +132,6 @@ Hooks.on('getSceneControlButtons', (controls) => {
         button: true,
         visible: true,
         onClick: () => {
-            console.log(`${MODULE_ID} | Shop button clicked`);
             if (game.user.isGM) {
                 ShopManager.open();
             } else {
@@ -173,21 +144,22 @@ Hooks.on('getSceneControlButtons', (controls) => {
         }
     };
 
-    // Add tools based on structure
-    if (tokenControls.tools) {
-        if (Array.isArray(tokenControls.tools)) {
-            tokenControls.tools.push(shopTool);
-            console.log(`${MODULE_ID} | Added to tools array`);
-        } else if (tokenControls.tools.set) {
-            tokenControls.tools.set('arena-market', shopTool);
-            console.log(`${MODULE_ID} | Added to tools Map`);
-        } else {
-            tokenControls.tools['arena-market'] = shopTool;
-            console.log(`${MODULE_ID} | Added to tools object`);
-        }
-    } else {
-        console.warn(`${MODULE_ID} | tokenControls.tools not found`);
+    // Add to tools object (Foundry v13 uses object, not array)
+    tokenControls.tools['arena-market'] = shopTool;
+
+    // Also add preview for GM
+    if (game.user.isGM) {
+        tokenControls.tools['arena-market-preview'] = {
+            name: 'arena-market-preview',
+            title: 'Arena Market (Preview)',
+            icon: 'fas fa-shopping-cart',
+            button: true,
+            visible: true,
+            onClick: () => PlayerShop.open()
+        };
     }
+
+    console.log(`${MODULE_ID} | Tools added to tokenControls`, tokenControls.tools);
 });
 
 /**
