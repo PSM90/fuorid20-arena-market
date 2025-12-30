@@ -2,7 +2,7 @@
     "id": "fuorid20-arena-market",
     "title": "Fuori D20: Arena Market",
     "description": "Sistema di mercato/negozio per sessioni live D&D 5e. Gestione oggetti illimitati, limitati e prenotabili con sincronizzazione real-time.",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "compatibility": {
         "minimum": "13",
         "verified": "13.345"
