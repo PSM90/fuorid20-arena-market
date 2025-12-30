@@ -600,7 +600,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--arena-border-radius);
     color: var(--arena-text);
-    padding: 8px 15px;
+    padding: 0 5px;
     min-width: 180px;
 }
 

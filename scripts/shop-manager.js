@@ -133,6 +133,9 @@ export class ShopManager extends FormApplication {
     activateListeners(html) {
         super.activateListeners(html);
 
+        // Tab switching
+        html.find('.tab-item').on('click', this._onTabClick.bind(this));
+
         // Compendium selection
         html.find('.compendium-checkbox').on('change', this._onCompendiumToggle.bind(this));
 
@@ -152,6 +155,23 @@ export class ShopManager extends FormApplication {
 
         // Save button
         html.find('.save-config-btn').on('click', this._onSaveConfig.bind(this));
+    }
+
+    /**
+     * Handle tab switching
+     */
+    _onTabClick(event) {
+        event.preventDefault();
+        const clickedTab = event.currentTarget;
+        const tabName = clickedTab.dataset.tab;
+
+        // Update tab navigation
+        this.element.find('.tab-item').removeClass('active');
+        clickedTab.classList.add('active');
+
+        // Update tab content
+        this.element.find('.tab-content').removeClass('active');
+        this.element.find(`.tab-content[data-tab="${tabName}"]`).addClass('active');
     }
 
     /**

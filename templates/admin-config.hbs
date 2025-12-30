@@ -72,8 +72,8 @@
                                             {{arenaLoc "Item.Reservation"}}
                                         </option>
                                     </select>
-                                    <div class="quantity-wrapper" style="{{#if (arenaEq config.availability "
-                                        unlimited")}}display:none{{/if}}">
+                                    <div class="quantity-wrapper" {{#if (arenaEq config.availability "unlimited"
+                                        )}}style="display:none" {{/if}}>
                                         <input type="number" class="item-quantity" data-uuid="{{uuid}}"
                                             value="{{config.quantity}}" min="1" placeholder="Qtà">
                                     </div>
