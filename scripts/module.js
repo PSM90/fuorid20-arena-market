@@ -108,38 +108,86 @@ Hooks.once('ready', async () => {
  * Add controls to scene controls
  */
 Hooks.on('getSceneControlButtons', (controls) => {
-    const tokenControls = controls.find(c => c.name === 'token');
-    if (!tokenControls) return;
+    // Foundry v13: controls is an array of control groups
+    // We need to find the token controls group
+    let tokenControls;
 
-    tokenControls.tools.push({
-        name: 'arena-market',
-        title: game.i18n.localize('ARENA_MARKET.Title'),
-        icon: 'fas fa-store',
-        button: true,
-        onClick: () => {
-            if (game.user.isGM) {
-                // GM sees admin config
-                ShopManager.open();
-            } else {
-                // Players see shop
-                if (isShopOpen()) {
-                    PlayerShop.open();
+    // Check if controls is an array (v13+) or object
+    if (Array.isArray(controls)) {
+        tokenControls = controls.find(c => c.name === 'token');
+    } else if (controls.tokens) {
+        // Fallback for different structure
+        tokenControls = controls.tokens;
+    }
+
+    if (!tokenControls) {
+        console.warn(`${MODULE_ID} | Could not find token controls`);
+        return;
+    }
+
+    // Ensure tools exists
+    if (!tokenControls.tools) {
+        tokenControls.tools = [];
+    }
+
+    // Check if tools is an array or Map
+    if (Array.isArray(tokenControls.tools)) {
+        tokenControls.tools.push({
+            name: 'arena-market',
+            title: game.i18n.localize('ARENA_MARKET.Title'),
+            icon: 'fas fa-store',
+            button: true,
+            onClick: () => {
+                if (game.user.isGM) {
+                    ShopManager.open();
                 } else {
-                    ui.notifications.warn(game.i18n.localize('ARENA_MARKET.Shop.ClosedMessage'));
+                    if (isShopOpen()) {
+                        PlayerShop.open();
+                    } else {
+                        ui.notifications.warn(game.i18n.localize('ARENA_MARKET.Shop.ClosedMessage'));
+                    }
                 }
             }
-        }
-    });
-
-    // Add separate player shop button for GM
-    if (game.user.isGM) {
-        tokenControls.tools.push({
-            name: 'arena-market-preview',
-            title: game.i18n.localize('ARENA_MARKET.PlayerTitle') + ' (Preview)',
-            icon: 'fas fa-shopping-cart',
-            button: true,
-            onClick: () => PlayerShop.open()
         });
+
+        if (game.user.isGM) {
+            tokenControls.tools.push({
+                name: 'arena-market-preview',
+                title: game.i18n.localize('ARENA_MARKET.PlayerTitle') + ' (Preview)',
+                icon: 'fas fa-shopping-cart',
+                button: true,
+                onClick: () => PlayerShop.open()
+            });
+        }
+    } else if (tokenControls.tools instanceof Map || typeof tokenControls.tools.set === 'function') {
+        // Foundry v13 uses a Map for tools
+        tokenControls.tools.set('arena-market', {
+            name: 'arena-market',
+            title: game.i18n.localize('ARENA_MARKET.Title'),
+            icon: 'fas fa-store',
+            button: true,
+            onClick: () => {
+                if (game.user.isGM) {
+                    ShopManager.open();
+                } else {
+                    if (isShopOpen()) {
+                        PlayerShop.open();
+                    } else {
+                        ui.notifications.warn(game.i18n.localize('ARENA_MARKET.Shop.ClosedMessage'));
+                    }
+                }
+            }
+        });
+
+        if (game.user.isGM) {
+            tokenControls.tools.set('arena-market-preview', {
+                name: 'arena-market-preview',
+                title: game.i18n.localize('ARENA_MARKET.PlayerTitle') + ' (Preview)',
+                icon: 'fas fa-shopping-cart',
+                button: true,
+                onClick: () => PlayerShop.open()
+            });
+        }
     }
 });
 
