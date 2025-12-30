@@ -54,7 +54,7 @@
 }
 
 /* Sidebar */
-.compendium-sidebar {
+.arena-market .compendium-sidebar {
     width: 250px;
     background: rgba(0, 0, 0, 0.2);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -63,7 +63,7 @@
     padding: 15px;
 }
 
-.compendium-sidebar h3 {
+.arena-market .compendium-sidebar h3 {
     color: var(--arena-primary);
     margin: 0 0 15px 0;
     font-size: 0.9em;
@@ -313,13 +313,14 @@
     overflow-y: auto;
 }
 
-.activity-item {
+.arena-market .activity-item {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px;
     margin: 5px 0;
-    background: rgba(255, 255, 255, 0.05);
+    background: #fff;
+    color: #000;
     border-radius: var(--arena-border-radius);
 }
 

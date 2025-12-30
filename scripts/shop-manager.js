@@ -183,6 +183,22 @@ export class ShopManager extends FormApplication {
 
         if (checked) {
             this._selectedCompendiums.add(compId);
+
+            // Auto-add all items from this compendium with default config
+            const pack = game.packs.get(compId);
+            if (pack) {
+                const items = await pack.getDocuments();
+                for (const item of items) {
+                    if (!this._itemConfigs[item.uuid]) {
+                        this._itemConfigs[item.uuid] = {
+                            availability: AVAILABILITY_TYPES.UNLIMITED,
+                            quantity: 1,
+                            customPrice: null,
+                            currentStock: null
+                        };
+                    }
+                }
+            }
         } else {
             this._selectedCompendiums.delete(compId);
         }
