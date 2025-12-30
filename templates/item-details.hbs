@@ -1,0 +1,75 @@
+<div class="item-details-popup">
+    <div class="item-header">
+        <img src="{{item.img}}" alt="{{item.name}}" class="item-large-img">
+        <div class="item-header-info">
+            <h2>{{item.name}}</h2>
+            <span class="item-type-badge">{{item.type}}</span>
+            {{#if item.rarity}}
+            <span class="item-rarity rarity-{{item.rarity}}">{{item.rarity}}</span>
+            {{/if}}
+        </div>
+    </div>
+
+    <div class="item-body">
+        <div class="item-description">
+            {{{item.description}}}
+        </div>
+
+        {{#if item.weight}}
+        <div class="item-stat">
+            <span class="stat-label">Peso:</span>
+            <span class="stat-value">{{item.weight}} lb</span>
+        </div>
+        {{/if}}
+
+        {{#if item.attunement}}
+        <div class="item-stat attunement">
+            <i class="fas fa-link"></i>
+            <span>Richiede Sintonia</span>
+        </div>
+        {{/if}}
+    </div>
+
+    <div class="item-footer">
+        <div class="price-display">
+            <span class="price-label">Prezzo:</span>
+            <span class="price-amount">
+                <i class="fas fa-coins"></i>
+                {{arenaFormatCurrency item.price}} {{item.currencyName}}
+            </span>
+        </div>
+
+        <div class="availability-display">
+            {{#if item.isUnlimited}}
+            <span class="availability unlimited">
+                <i class="fas fa-infinity"></i>
+                {{arenaLoc "Item.Unlimited"}}
+            </span>
+            {{else if item.isLimited}}
+            <span class="availability limited">
+                <i class="fas fa-cubes"></i>
+                {{item.stock}} {{arenaLoc "Item.Available"}}
+            </span>
+            {{else if item.isReservation}}
+            <span class="availability reservation">
+                <i class="fas fa-bookmark"></i>
+                {{arenaLoc "Item.Reservation"}}
+            </span>
+            {{/if}}
+        </div>
+
+        <div class="action-buttons">
+            {{#if item.isReservation}}
+            <button type="button" class="reserve-btn" data-uuid="{{item.uuid}}">
+                <i class="fas fa-bookmark"></i>
+                {{arenaLoc "Item.Reserve"}}
+            </button>
+            {{else}}
+            <button type="button" class="buy-btn" data-uuid="{{item.uuid}}">
+                <i class="fas fa-shopping-cart"></i>
+                {{arenaLoc "Item.Buy"}}
+            </button>
+            {{/if}}
+        </div>
+    </div>
+</div>

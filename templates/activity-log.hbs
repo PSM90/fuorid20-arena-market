@@ -1,0 +1,53 @@
+<div class="activity-log-container">
+    <header class="log-header">
+        <h3>
+            <i class="fas fa-history"></i>
+            {{arenaLoc "ActivityLogTitle"}}
+        </h3>
+        <button type="button" class="clear-log-btn">
+            <i class="fas fa-trash"></i>
+            {{arenaLoc "Activity.Clear"}}
+        </button>
+    </header>
+
+    <div class="log-content">
+        {{#if activityLog.length}}
+        <ul class="activity-list">
+            {{#each activityLog}}
+            <li class="activity-entry {{type}}">
+                <span class="entry-icon">
+                    {{#if (arenaEq type "purchase")}}
+                    <i class="fas fa-coins"></i>
+                    {{else}}
+                    <i class="fas fa-bookmark"></i>
+                    {{/if}}
+                </span>
+                <div class="entry-content">
+                    <span class="entry-actor">{{actorName}}</span>
+                    <span class="entry-player">({{playerName}})</span>
+                    <span class="entry-action">
+                        {{#if (arenaEq type "purchase")}}
+                        ha acquistato
+                        {{else}}
+                        ha prenotato
+                        {{/if}}
+                    </span>
+                    <span class="entry-item">{{itemName}}</span>
+                    {{#if price}}
+                    <span class="entry-price">
+                        per <strong>{{price}}</strong> {{currency}}
+                    </span>
+                    {{/if}}
+                </div>
+                <span class="entry-time">{{arenaFormatDate timestamp}}</span>
+            </li>
+            {{/each}}
+        </ul>
+        {{else}}
+        <div class="empty-log">
+            <i class="fas fa-clipboard-list"></i>
+            <p>{{arenaLoc "Activity.NoActivity"}}</p>
+        </div>
+        {{/if}}
+    </div>
+</div>

@@ -1,0 +1,76 @@
+{
+    "ARENA_MARKET": {
+        "Title": "Arena Market",
+        "AdminTitle": "Configurazione Negozio",
+        "PlayerTitle": "Negozio",
+        "ActivityLogTitle": "Log Attività",
+        "Settings": {
+            "CurrencyName": {
+                "Name": "Nome Valuta",
+                "Hint": "Nome personalizzato per la valuta (es. Drakki). Verrà usato al posto di 'Ori' nell'interfaccia."
+            },
+            "ShopOpen": {
+                "Name": "Stato Negozio",
+                "Hint": "Indica se il negozio è attualmente aperto o chiuso."
+            }
+        },
+        "Shop": {
+            "Open": "Apri Negozio",
+            "Close": "Chiudi Negozio",
+            "Closed": "Negozio Chiuso",
+            "ClosedMessage": "Il negozio è attualmente chiuso. Attendi che il Master lo apra.",
+            "SelectCharacter": "Seleziona Personaggio",
+            "NoCharacters": "Nessun personaggio disponibile",
+            "YourGold": "Il tuo oro",
+            "NoItems": "Nessun oggetto disponibile in questa categoria"
+        },
+        "Item": {
+            "Unlimited": "Illimitato",
+            "Limited": "Limitato",
+            "Reservation": "Prenotazione",
+            "Available": "Disponibili",
+            "SoldOut": "Esaurito",
+            "Reserved": "Prenotato",
+            "Price": "Prezzo",
+            "Quantity": "Quantità",
+            "Buy": "Acquista",
+            "Reserve": "Prenota",
+            "Details": "Dettagli"
+        },
+        "Admin": {
+            "SelectCompendiums": "Seleziona Compendi",
+            "ConfigureItems": "Configura Oggetti",
+            "AvailabilityType": "Tipo Disponibilità",
+            "CustomPrice": "Prezzo Personalizzato",
+            "CustomPriceHint": "Lascia vuoto per usare il prezzo originale dell'oggetto",
+            "MaxQuantity": "Quantità Massima",
+            "Save": "Salva",
+            "Cancel": "Annulla",
+            "NoCompendiumSelected": "Seleziona un compendio dalla lista",
+            "CompendiumsSelected": "compendi selezionati",
+            "ItemsConfigured": "oggetti configurati"
+        },
+        "Activity": {
+            "Purchase": "Acquisto",
+            "Reservation": "Prenotazione",
+            "NoActivity": "Nessuna attività registrata",
+            "Clear": "Pulisci Log",
+            "By": "da",
+            "For": "per"
+        },
+        "Notifications": {
+            "PurchaseSuccess": "Hai acquistato {item} per {price} {currency}!",
+            "ReservationSuccess": "Hai prenotato {item}!",
+            "NotEnoughGold": "Non hai abbastanza {currency}!",
+            "ItemSoldOut": "Questo oggetto è esaurito!",
+            "ShopClosed": "Il negozio è chiuso!",
+            "ConfigSaved": "Configurazione salvata!",
+            "NoCharacterSelected": "Seleziona prima un personaggio!"
+        },
+        "Buttons": {
+            "OpenShop": "Apri Negozio",
+            "ConfigureShop": "Configura Negozio",
+            "ViewActivityLog": "Visualizza Log"
+        }
+    }
+}

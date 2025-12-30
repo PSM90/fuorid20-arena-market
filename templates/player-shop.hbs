@@ -1,0 +1,107 @@
+<div class="player-shop-container">
+    {{#unless shopOpen}}
+    <!-- Shop Closed Message -->
+    <div class="shop-closed-overlay">
+        <div class="closed-message">
+            <i class="fas fa-store-slash"></i>
+            <h2>{{arenaLoc "Shop.Closed"}}</h2>
+            <p>{{arenaLoc "Shop.ClosedMessage"}}</p>
+        </div>
+    </div>
+    {{/unless}}
+
+    <!-- Header -->
+    <header class="shop-header">
+        <div class="character-selector">
+            <label>{{arenaLoc "Shop.SelectCharacter"}}:</label>
+            <select class="actor-select">
+                {{#if playerActors.length}}
+                {{#each playerActors}}
+                <option value="{{id}}" {{#if selected}}selected{{/if}}>
+                    {{name}}
+                </option>
+                {{/each}}
+                {{else}}
+                <option disabled>{{arenaLoc "Shop.NoCharacters"}}</option>
+                {{/if}}
+            </select>
+        </div>
+        <div class="wallet-display">
+            <i class="fas fa-coins"></i>
+            <span class="gold-amount">{{arenaFormatCurrency playerGold}}</span>
+            <span class="currency-name">{{currencyName}}</span>
+        </div>
+    </header>
+
+    {{#if hasCategories}}
+    <!-- Category Tabs -->
+    <nav class="category-tabs">
+        {{#each categories}}
+        <button type="button" class="category-tab {{#if active}}active{{/if}}" data-category="{{id}}">
+            {{name}}
+            <span class="item-count">({{items.length}})</span>
+        </button>
+        {{/each}}
+    </nav>
+
+    <!-- Items Grid -->
+    <main class="items-container">
+        {{#each categories}}
+        <div class="category-content {{#if active}}active{{/if}}" data-category="{{id}}">
+            <div class="items-grid">
+                {{#each items}}
+                <article class="shop-item {{#if isSoldOut}}sold-out{{/if}} {{#if hasReserved}}reserved{{/if}}"
+                    data-uuid="{{uuid}}">
+                    <div class="item-image">
+                        <img src="{{img}}" alt="{{name}}">
+                        {{#if isUnlimited}}
+                        <span class="availability-badge unlimited">∞</span>
+                        {{else if isLimited}}
+                        <span class="availability-badge limited">{{stock}}</span>
+                        {{else if isReservation}}
+                        <span class="availability-badge reservation">
+                            <i class="fas fa-bookmark"></i>
+                        </span>
+                        {{/if}}
+                    </div>
+                    <div class="item-details">
+                        <h4 class="item-name">{{name}}</h4>
+                        <p class="item-description">{{arenaTruncate description 60}}</p>
+                        <div class="item-footer">
+                            <span class="item-price">
+                                <i class="fas fa-coins"></i>
+                                {{arenaFormatCurrency price}}
+                            </span>
+                            {{#if isSoldOut}}
+                            <span class="sold-out-label">{{arenaLoc "Item.SoldOut"}}</span>
+                            {{else if hasReserved}}
+                            <span class="reserved-label">{{arenaLoc "Item.Reserved"}}</span>
+                            {{else if isReservation}}
+                            <button type="button" class="reserve-btn" data-uuid="{{uuid}}" {{#if
+                                disabled}}disabled{{/if}}>
+                                <i class="fas fa-bookmark"></i>
+                                {{arenaLoc "Item.Reserve"}}
+                            </button>
+                            {{else}}
+                            <button type="button" class="buy-btn" data-uuid="{{uuid}}" {{#if disabled}}disabled{{/if}}
+                                title="{{#unless canAfford}}Non hai abbastanza oro{{/unless}}">
+                                <i class="fas fa-shopping-cart"></i>
+                                {{arenaLoc "Item.Buy"}}
+                            </button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </article>
+                {{/each}}
+            </div>
+        </div>
+        {{/each}}
+    </main>
+    {{else}}
+    <!-- No Items -->
+    <div class="empty-shop">
+        <i class="fas fa-box-open"></i>
+        <p>{{arenaLoc "Shop.NoItems"}}</p>
+    </div>
+    {{/if}}
+</div>

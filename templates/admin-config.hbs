@@ -1,0 +1,195 @@
+<form class="arena-market-admin-form" autocomplete="off">
+    <div class="admin-layout">
+        <!-- Sidebar: Compendium Selection -->
+        <aside class="compendium-sidebar">
+            <h3>{{arenaLoc "Admin.SelectCompendiums"}}</h3>
+            <div class="compendiums-list">
+                {{#each compendiums}}
+                <label class="compendium-item {{#if selected}}selected{{/if}}">
+                    <input type="checkbox" class="compendium-checkbox" data-compendium="{{id}}" {{#if
+                        selected}}checked{{/if}}>
+                    <span class="compendium-info">
+                        <span class="compendium-name">{{label}}</span>
+                        <span class="compendium-package">{{package}}</span>
+                    </span>
+                </label>
+                {{/each}}
+            </div>
+            <div class="sidebar-stats">
+                <span>{{selectedCompendiums.length}} {{arenaLoc "Admin.CompendiumsSelected"}}</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Navigation Tabs -->
+            <nav class="tabs-nav">
+                <a class="tab-item active" data-tab="items">
+                    <i class="fas fa-box-open"></i>
+                    {{arenaLoc "Admin.ConfigureItems"}}
+                </a>
+                <a class="tab-item" data-tab="activity">
+                    <i class="fas fa-history"></i>
+                    {{arenaLoc "ActivityLogTitle"}}
+                </a>
+            </nav>
+
+            <div class="tabs-content">
+                <!-- Items Configuration Tab -->
+                <section class="tab-content active" data-tab="items">
+                    {{#if hasSelectedCompendiums}}
+                    {{#each categorizedItems}}
+                    <div class="category-section">
+                        <h4 class="category-header">
+                            <i class="fas fa-folder"></i>
+                            {{name}}
+                            <span class="item-count">{{items.length}} oggetti</span>
+                        </h4>
+                        <div class="items-grid">
+                            {{#each items}}
+                            <div class="item-row" data-uuid="{{uuid}}">
+                                <img src="{{img}}" alt="{{name}}" class="item-img">
+                                <div class="item-info">
+                                    <span class="item-name">{{name}}</span>
+                                    <span class="item-type">{{type}}</span>
+                                </div>
+                                <div class="item-original-price">
+                                    <span class="price-label">Originale:</span>
+                                    <span class="price-value">{{price}} {{priceUnit}}</span>
+                                </div>
+                                <div class="item-config">
+                                    <select class="item-availability" data-uuid="{{uuid}}">
+                                        <option value="unlimited" {{#if (arenaEq config.availability "unlimited"
+                                            )}}selected{{/if}}>
+                                            {{arenaLoc "Item.Unlimited"}}
+                                        </option>
+                                        <option value="limited" {{#if (arenaEq config.availability "limited"
+                                            )}}selected{{/if}}>
+                                            {{arenaLoc "Item.Limited"}}
+                                        </option>
+                                        <option value="reservation" {{#if (arenaEq config.availability "reservation"
+                                            )}}selected{{/if}}>
+                                            {{arenaLoc "Item.Reservation"}}
+                                        </option>
+                                    </select>
+                                    <div class="quantity-wrapper" style="{{#if (arenaEq config.availability "
+                                        unlimited")}}display:none{{/if}}">
+                                        <input type="number" class="item-quantity" data-uuid="{{uuid}}"
+                                            value="{{config.quantity}}" min="1" placeholder="Qtà">
+                                    </div>
+                                    <div class="custom-price-wrapper">
+                                        <input type="number" class="item-custom-price" data-uuid="{{uuid}}"
+                                            value="{{config.customPrice}}" min="0" step="0.1"
+                                            placeholder="Prezzo custom">
+                                    </div>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <p>{{arenaLoc "Admin.NoCompendiumSelected"}}</p>
+                    </div>
+                    {{/if}}
+                </section>
+
+                <!-- Activity Log Tab -->
+                <section class="tab-content" data-tab="activity">
+                    <div class="activity-header">
+                        <h4>{{arenaLoc "ActivityLogTitle"}}</h4>
+                        <button type="button" class="clear-log-btn">
+                            <i class="fas fa-trash"></i>
+                            {{arenaLoc "Activity.Clear"}}
+                        </button>
+                    </div>
+                    <div class="activity-list">
+                        {{#if activityLog.length}}
+                        {{#each activityLog}}
+                        <div class="activity-item {{type}}">
+                            <span class="activity-icon">
+                                {{#if (arenaEq type "purchase")}}
+                                <i class="fas fa-coins"></i>
+                                {{else}}
+                                <i class="fas fa-bookmark"></i>
+                                {{/if}}
+                            </span>
+                            <span class="activity-details">
+                                <strong>{{actorName}}</strong> ({{playerName}}) -
+                                {{#if (arenaEq type "purchase")}}
+                                {{arenaLoc "Activity.Purchase"}}:
+                                {{else}}
+                                {{arenaLoc "Activity.Reservation"}}:
+                                {{/if}}
+                                <em>{{itemName}}</em>
+                                {{#if price}}
+                                {{arenaLoc "Activity.For"}} {{price}} {{currency}}
+                                {{/if}}
+                            </span>
+                            <span class="activity-time">{{arenaFormatDate timestamp}}</span>
+                            <button type="button" class="delete-entry-btn" data-entry-id="{{id}}" title="Elimina">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        {{/each}}
+                        {{else}}
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>{{arenaLoc "Activity.NoActivity"}}</p>
+                        </div>
+                        {{/if}}
+                    </div>
+
+                    <!-- Reservations Section -->
+                    {{#if reservations}}
+                    <div class="reservations-section">
+                        <h4><i class="fas fa-bookmark"></i> Prenotazioni Attive</h4>
+                        {{#each reservations}}
+                        <div class="reservation-group">
+                            <span class="reservation-item-name">{{@key}}</span>
+                            <ul class="reservation-list">
+                                {{#each this}}
+                                <li>
+                                    <strong>{{actorName}}</strong> ({{playerName}}) -
+                                    {{arenaFormatDate timestamp}}
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <div class="shop-status">
+            <span class="status-label">Stato Negozio:</span>
+            <span class="status-indicator {{#if shopOpen}}open{{else}}closed{{/if}}">
+                {{#if shopOpen}}
+                <i class="fas fa-door-open"></i> Aperto
+                {{else}}
+                <i class="fas fa-door-closed"></i> Chiuso
+                {{/if}}
+            </span>
+            <button type="button" class="toggle-shop-btn">
+                {{#if shopOpen}}
+                {{arenaLoc "Shop.Close"}}
+                {{else}}
+                {{arenaLoc "Shop.Open"}}
+                {{/if}}
+            </button>
+        </div>
+        <div class="footer-buttons">
+            <button type="button" class="save-config-btn">
+                <i class="fas fa-save"></i>
+                {{arenaLoc "Admin.Save"}}
+            </button>
+        </div>
+    </footer>
+</form>
