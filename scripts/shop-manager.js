@@ -26,7 +26,7 @@ export class ShopManager extends FormApplication {
             title: game.i18n.localize('ARENA_MARKET.AdminTitle'),
             template: `modules/${MODULE_ID}/templates/admin-config.hbs`,
             classes: ['arena-market', 'arena-market-admin'],
-            width: 800,
+            width: 1300,
             height: 700,
             resizable: true,
             tabs: [{
