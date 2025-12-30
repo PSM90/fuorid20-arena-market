@@ -36,5 +36,8 @@
             "path": "lang/it.json"
         }
     ],
-    "socket": true
+    "socket": true,
+    "url": "https://github.com/PSM90/fuorid20-arena-market",
+    "manifest": "https://raw.githubusercontent.com/PSM90/fuorid20-arena-market/main/module.json",
+    "download": "https://github.com/PSM90/fuorid20-arena-market/archive/refs/heads/main.zip"
 }
