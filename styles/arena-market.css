@@ -779,7 +779,7 @@
     font-size: 1em;
 }
 
-.item-description {
+.arena-market .item-description {
     font-size: 0.85em;
     color: var(--arena-text-muted);
     margin: 0 0 10px 0;
