@@ -412,7 +412,8 @@
 
 .reservation-list li {
     padding: 8px 15px;
-    background: rgba(255, 255, 255, 0.05);
+    background: #fff;
+    color: #000;
     margin: 3px 0;
     border-radius: var(--arena-border-radius);
     font-size: 0.9em;
